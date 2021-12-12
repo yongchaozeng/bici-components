@@ -1,0 +1,103 @@
+## 表单筛选查询
+
+Demo:
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import { Form, Input } from 'antd';
+import { QueryFilter, BiciTable } from 'bici-components';
+export default () => {
+  const [tableForm] = Form.useForm();
+  const [array, setArray] = useState([]);
+  useEffect(() => {
+    setTimeout(() => {
+      setArray([
+        {
+          label: 'test1',
+          value: 'value1',
+        },
+        {
+          label: 'test2',
+          value: 'value2',
+        },
+        {
+          label: 'test3',
+          value: 'value3',
+        },
+      ]);
+    }, 2000);
+  }, []);
+  const request = async () => {
+    const data = [...new Array(100)].map((item, index) => {
+      return {
+        coldDrawnFactoryText: {
+          embryoRateQuantity: `炉号${index + 1}`,
+        },
+        id: `id${index}`,
+        mark: `同一产品${index}`,
+        onlyNum: '同一产品9MAL21575Ф4829D60127Ф3429D60127Ф342φ147φ12φ12',
+        restoreState: 0,
+        smeltingFactoryText: {
+          num: '9MAL21575',
+          steelIngotQuantity: '16266.00',
+          spec: 'Ф482',
+          materialCost: '102.00',
+        },
+        steelFactoryText: {
+          spec: 'φ12',
+          embryoRateQuantity: '352.00',
+          materialQuantity: '267.00',
+          materialCost: '34.00',
+        },
+        uploadTime: '2021-12-10',
+      };
+    });
+    return Promise.resolve({
+      code: '200',
+      msg: 'success',
+      pageNum: 1,
+      pageSize: 1,
+      total: 3,
+      totalPage: 3,
+      data,
+    });
+  };
+  return (
+    <BiciTable
+      columns={[
+        {
+          title: '炉号',
+          dataIndex: ['coldDrawnFactoryText', 'embryoRateQuantity'],
+          filterType: 'input',
+        },
+        { title: '牌号', dataIndex: 'onlyNum', valueType: 'select', valueEnum: array },
+        { title: '努不光彩', dataIndex: 'id', filterType: 'input' },
+        { title: '嘤嘤嘤', dataIndex: 'mark' },
+        { title: '增不绝口', dataIndex: 'uploadTime' },
+      ]}
+      request={request}
+    />
+  );
+};
+```
+
+```tsx
+import React from 'react';
+import { Form, Input } from 'antd';
+import { QueryFilter } from 'bici-components';
+export default () => {
+  const [tableForm] = Form.useForm();
+  return (
+    <QueryFilter
+      form={tableForm}
+      onFinish={(params) => {
+        console.log('params', params);
+      }}
+    >
+      <Form.Item name={'test15'} label={'testsdsdsa25'}>
+        <Input></Input>
+      </Form.Item>
+    </QueryFilter>
+  );
+};
+```
