@@ -1,4 +1,4 @@
-import React, { forwardRef, FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 declare global {
   interface Window {
     WebKitMutationObserver: any;
@@ -17,10 +17,13 @@ const Watermark: FC<{
       watermark({
         container: dom,
       });
+    return () => {
+      // 卸载dom
+    };
   }, []);
 
   return (
-    <div ref={ref} style={style}>
+    <div className="test3" ref={ref} style={style}>
       {children}
     </div>
   );
@@ -58,7 +61,7 @@ function watermark(options?: any) {
   const base64Url = canvas.toDataURL(); // 返回一个包含图片展示的 data URI
 
   const __wm = document.querySelector('.__wm'); //选择器
-  const watermarkDiv = __wm || document.createElement('div');
+  const watermarkDiv = document.createElement('div');
   const styleStr = `
     position:absolute;
     top:0px;
@@ -74,9 +77,11 @@ function watermark(options?: any) {
   watermarkDiv.classList.add('__wm'); // 为元素添加“__wm”类名
 
   container.style.position = 'relative';
-  if (!__wm) {
-    container.appendChild(watermarkDiv); // 添加元素
-  }
+  // if (!__wm) {
+  container.append(watermarkDiv);
+  // container.append(watermarkDiv);
+  // container.appendChild(watermarkDiv); // 添加元素
+  // }
 
   const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
   // 检查浏览器是否支持这个API

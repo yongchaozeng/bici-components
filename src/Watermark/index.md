@@ -1,5 +1,3 @@
-## Watermark
-
 Demo:
 
 ```tsx

@@ -1,5 +1,3 @@
-## 表单筛选查询
-
 Demo:
 
 ```tsx
@@ -77,27 +75,6 @@ export default () => {
       ]}
       request={request}
     />
-  );
-};
-```
-
-```tsx
-import React from 'react';
-import { Form, Input } from 'antd';
-import { QueryFilter } from 'bici-components';
-export default () => {
-  const [tableForm] = Form.useForm();
-  return (
-    <QueryFilter
-      form={tableForm}
-      onFinish={(params) => {
-        console.log('params', params);
-      }}
-    >
-      <Form.Item name={'test15'} label={'testsdsdsa25'}>
-        <Input></Input>
-      </Form.Item>
-    </QueryFilter>
   );
 };
 ```
