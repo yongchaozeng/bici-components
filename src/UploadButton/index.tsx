@@ -55,34 +55,7 @@ const UploadButton: FC<{
     </div>
   );
   async function handleUpload() {
-    console.log(1.1);
-
     onUpload(file!);
-    //   createBuilderStatusReporter()
-    // try {
-    //   const formData = new FormData();
-    //   if (file) {
-    //     formData.append('multipartFiles', file);
-    //   }
-    //   //   const api = type === 'pro' ? proAnalysisExcels : resAnalysisExcels;
-    //   await api(formData);
-    //   message.success('上传成功！');
-    //   //   update();
-    //   toggle();
-    // } catch (e) {
-    //   const error: any = e;
-    //   if (error) {
-    //     if (error.data) {
-    //       Modal.info({
-    //         width: 700,
-    //         title: error.msg,
-    //         content: error.data?.map((item: any, index: number) => (
-    //           <div key={index}>{item}</div>
-    //         )),
-    //       });
-    //     }
-    //   }
-    // }
   }
   return (
     <Popover placement="bottom" content={content} visible={visible} trigger="click">

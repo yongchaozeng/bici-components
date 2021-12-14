@@ -1,3 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
-export default ({ title }: { title: string }) => <h1>{title}</h1>;
+const Foo = ({ title }: { title: string }) => {
+    const [num, setNum] = useState(0);
+  return <h1>789{title}</h1>;
+};
+export default Foo;

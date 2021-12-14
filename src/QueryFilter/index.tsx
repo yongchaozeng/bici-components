@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useMemo, ReactChild } from 'react';
 import { Row, Col, Button, Form } from 'antd';
-import { useUpdate } from 'ahooks';
+// import { useUpdate } from 'ahooks';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 const BREAKPOINTS = {
   vertical: [
@@ -24,14 +24,14 @@ const QueryFilter: FC<{
   form: any;
 }> = (props) => {
   const { children, onFinish, form } = props;
-  const update = useUpdate();
+  // const update = useUpdate();
   const [collapse, setCollapse] = useState<boolean>(false);
   const width = document.body.clientWidth;
   const config = BREAKPOINTS.default.find((e) => width < e[0]);
   const number = config![1] as number;
   const span = 24 / number;
   function size() {
-    update();
+    // update();
   }
   useEffect(() => {
     window.addEventListener('resize', size);
