@@ -8,6 +8,6 @@ export default defineConfig({
   outputPath: 'docs-dist',
   styles:
     process.env.NODE_ENV === 'development'
-      ? [`https://gw.alipayobjects.com/os/lib/antd/4.6.6/dist/antd.css`]
+      ? [`https://cdn.bootcdn.net/ajax/libs/antd/4.16.9/antd.compact.css`]
       : [], 
 });

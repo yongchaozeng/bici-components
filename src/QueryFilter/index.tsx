@@ -74,60 +74,64 @@ const QueryFilter: FC<{
   }, [currentSpan, span]);
   const isTooShort = map.length < 24 / span;
   return (
-    <Form
-      form={form}
-      labelCol={{ span: 6 }}
-      onFinish={(values) => {
-        onFinish?.(values);
-      }}
-      style={{
-        padding: '20px 10px 0 10px',
-        border: ' 1px solid #ebedf1',
-        borderRadius: '1px',
-      }}
-      wrapperCol={{ span: 18 }}
-    >
-      <Row gutter={16}>
-        {map}
-        <Col
-          span={span}
-          offset={isTooShort || collapse ? offset : 0}
-          style={{ textAlign: 'right' }}
+    <>
+      {map?.length !== 0 && (
+        <Form
+          form={form}
+          labelCol={{ span: 6 }}
+          onFinish={(values) => {
+            onFinish?.(values);
+          }}
+          style={{
+            padding: '20px 10px 0 10px',
+            border: ' 1px solid #ebedf1',
+            borderRadius: '1px',
+          }}
+          wrapperCol={{ span: 18 }}
         >
-          <Button
-            style={{ marginRight: 10 }}
-            onClick={() => {
-              form.resetFields();
-            }}
-          >
-            重置
-          </Button>
-          <Button type="primary" htmlType="submit">
-            查询
-          </Button>
-          {!isTooShort && (
-            <a
-              style={{ marginLeft: 10 }}
-              onClick={() => {
-                setCollapse(!collapse);
-              }}
+          <Row gutter={16}>
+            {map}
+            <Col
+              span={span}
+              offset={isTooShort || collapse ? offset : 0}
+              style={{ textAlign: 'right', marginBottom: 16 }}
             >
-              {collapse ? (
-                <span>
-                  收起
-                  <UpOutlined />
-                </span>
-              ) : (
-                <span>
-                  展示
-                  <DownOutlined />
-                </span>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  form.resetFields();
+                }}
+              >
+                重置
+              </Button>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              {!isTooShort && (
+                <a
+                  style={{ marginLeft: 10 }}
+                  onClick={() => {
+                    setCollapse(!collapse);
+                  }}
+                >
+                  {collapse ? (
+                    <span>
+                      收起
+                      <UpOutlined />
+                    </span>
+                  ) : (
+                    <span>
+                      展示
+                      <DownOutlined />
+                    </span>
+                  )}
+                </a>
               )}
-            </a>
-          )}
-        </Col>
-      </Row>
-    </Form>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </>
   );
 };
 

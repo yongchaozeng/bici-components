@@ -8,13 +8,24 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { Table, Form, Input, Select, Button, DatePicker, Typography, Tooltip } from 'antd';
+import {
+  Table,
+  Form,
+  Input,
+  Select,
+  Button,
+  DatePicker,
+  Typography,
+  Tooltip,
+  Dropdown,
+  Menu,
+} from 'antd';
 // import type { ColumnsType } from 'antd';
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { QueryFilter } from 'bici-components';
-import { CopyOutlined } from '@ant-design/icons';
+import { EllipsisOutlined } from '@ant-design/icons';
 
 import { useImmer } from 'use-immer';
 import styles from './index.module.less';
@@ -54,6 +65,7 @@ valueEnum:[]
 filters: true,
     onFilter: true,
     search: false,
+    hideInSearch
 
 }
 
@@ -65,18 +77,18 @@ filters: true,
       item.render = (text: any) => {
         return (
           <>
-            <Typography.Paragraph
-              style={{
-                margin: 0,
-                padding: 0,
-              }}
-              copyable={item.copyable}
-              ellipsis={item.ellipsis}
-            >
-              <Tooltip placement="topLeft" title={text}>
+            <Tooltip placement="topLeft" title={text}>
+              <Typography.Paragraph
+                style={{
+                  margin: 0,
+                  padding: 0,
+                }}
+                copyable={item.copyable}
+                ellipsis={item.ellipsis}
+              >
                 {text}
-              </Tooltip>
-            </Typography.Paragraph>
+              </Typography.Paragraph>
+            </Tooltip>
           </>
         );
       };
@@ -120,71 +132,63 @@ filters: true,
     },
     [dataSource],
   );
-  const formList = function () {
+  const formList = useMemo(() => {
     return columns?.map((item: any, index: any) => {
       const { valueType = 'input', valueEnum } = item;
       const selectTypeEnum = {
         input: <Input />,
         select: <Select options={valueEnum} />,
+        dateTime: <DatePicker style={{ width: '100%' }} />,
+        dateRange: <RangePicker />,
+        dateTimeRange: <RangePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />,
       };
-
-      return (
-        <Form.Item name={item.dataIndex} label={item.title} key={index}>
-          {/* {selectTypeEnum[valueType as 'input' | 'select']} */}
-          <Select
-            options={[
-              {
-                label: 1,
-                value: 1,
-              },
-              {
-                label: 2,
-                value: 2,
-              },
-              {
-                label: 3,
-                value: 3,
-              },
-            ]}
-          />
-        </Form.Item>
-      );
+      // 屏蔽搜索框
+      if (!item.hideInSearch || item.renderFormItem) {
+        return (
+          <Form.Item name={item.dataIndex} label={item.title} key={index}>
+            {item.renderFormItem
+              ? item.renderFormItem(item)
+              : selectTypeEnum[valueType as 'input' | 'select']}
+          </Form.Item>
+        );
+      }
     });
-  };
+  }, [columns]);
 
   return (
     <div>
-      <Select defaultValue="lucy" style={{ width: 120 }}>
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="disabled" disabled>
-          Disabled
-        </Option>
-        <Option value="Yiminghe">yiminghe134</Option> Can't perform a React state update on an
-        unmounted component. This is a no-op, but it indicates a memory leak in your application. To
-        fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-      </Select>
       <QueryFilter
         form={tableForm}
         onFinish={() => {
-          init();
+          init(
+            produce(page, (value) => {
+              value.pageNum = 1;
+            }),
+          );
         }}
       >
-        {formList()}
+        {formList}
       </QueryFilter>
 
       <div className="flex-between" style={{ padding: '16px 0' }}>
         <div className={styles.title}>表格</div>
         <div>
           <Button style={{ marginRight: 10 }}>新建</Button>
-          {/* <span style={{ fontSize: 20 }}>icon1 icon2 icon3</span> */}
         </div>
       </div>
 
       {selectedRowKeys.length !== 0 && (
         <div className={styles.selectContainer}>
           <div>
-            已选择 {selectedRowKeys.length} 项目 &emsp;<a href="">取消选择</a>
+            已选择 {selectedRowKeys.length} 项目 &emsp;
+            <a
+              onClick={() => {
+                // onSelectChange()
+                setSelectedRowKeys([]);
+              }}
+            >
+              取消选择
+            </a>
           </div>
           <span className={styles.cancelText}>
             <a href="">批量删除</a>&emsp;
@@ -269,5 +273,57 @@ const DraggableBodyRow: FC<{
       style={{ cursor: 'move', ...style }}
       {...restProps}
     />
+  );
+};
+
+export const reduceWidth = (width?: string | number): string | number | undefined => {
+  if (width === undefined) {
+    return width;
+  }
+  if (typeof width === 'string') {
+    if (!width.includes('calc')) {
+      return `calc(100% - ${width})`;
+    }
+    return width;
+  }
+  if (typeof width === 'number') {
+    return (width as number) - 32;
+  }
+  return width;
+};
+
+export const TableDropdown: FC<{
+  menu: { key: string; name: string }[];
+  onSelect?: ({ key, name }: { key: string; name: string }) => void;
+}> = (props) => {
+  const { menu, onSelect = () => {} } = props;
+  const menuContainer = () => {
+    return (
+      <Menu>
+        {menu.map((item, index) => {
+          return (
+            <Menu.Item key={index}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.antgroup.com"
+                onClick={() => {
+                  onSelect(item);
+                }}
+                style={{ padding: '0 20px' }}
+              >
+                {item.name}
+              </a>
+            </Menu.Item>
+          );
+        })}
+      </Menu>
+    );
+  };
+
+  return (
+    <Dropdown overlay={menuContainer} placement="bottomLeft">
+      <EllipsisOutlined style={{ color: '#1890ff', padding: '0 10px', cursor: 'pointer' }} />
+    </Dropdown>
   );
 };

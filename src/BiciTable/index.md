@@ -3,7 +3,7 @@ Demo:
 ```tsx
 import React, { useState, useEffect } from 'react';
 import { Form, Input } from 'antd';
-import { QueryFilter, BiciTable } from 'bici-components';
+import { QueryFilter, BiciTable, TableDropdown } from 'bici-components';
 export default () => {
   const [tableForm] = Form.useForm();
   const [array, setArray] = useState([]);
@@ -68,13 +68,19 @@ export default () => {
           dataIndex: ['coldDrawnFactoryText', 'embryoRateQuantity'],
           filterType: 'input',
           copyable: true,
+          hideInSearch: true,
+          renderFormItem() {
+            return <Input style={{ height: '82', color: 'red' }} />;
+          },
         },
         {
           title: '牌号1',
           dataIndex: 'onlyNum',
+          copyable: true,
           ellipsis: true,
           valueType: 'select',
           valueEnum: array,
+          hideInSearch: true,
         },
         {
           title: '牌号2',
@@ -83,9 +89,33 @@ export default () => {
           valueType: 'select',
           valueEnum: array,
         },
-        { title: '努不光彩', dataIndex: 'id', filterType: 'input' },
-        { title: '嘤嘤嘤', dataIndex: 'mark' },
+        { title: '努不光彩', dataIndex: 'id', valueType: 'dateTime' },
+        { title: '嘤嘤嘤', dataIndex: 'mark', valueType: 'dateRange' },
         { title: '增不绝口', dataIndex: 'uploadTime' },
+        {
+          title: '操作',
+          width: '180px',
+          valueType: 'option',
+          render: (text, record, _, action) => [
+            <a
+              key="editable"
+              onClick={() => {
+                // action?.startEditable?.(record.id);
+              }}
+            >
+              编辑
+            </a>,
+            <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+              查看
+            </a>,
+            <TableDropdown
+              menu={[
+                { key: 'copy', name: '复制' },
+                { key: 'delete', name: '删除' },
+              ]}
+            />,
+          ],
+        },
       ]}
       request={(params = {}, sort, filter) => {
         return request(params);

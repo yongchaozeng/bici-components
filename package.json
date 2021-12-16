@@ -29,7 +29,7 @@
     ]
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.7.0",
+    "@ant-design/icons": "^4.7.0", 
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
@@ -47,7 +47,6 @@
     "react-dnd": "^14.0.4",
     "react-dnd-html5-backend": "^14.0.2",
     "use-immer": "^0.6.0",
-    "yorkie": "^2.0.0",
-    "@ant-design/pro-table": "^2.60.0"
+    "yorkie": "^2.0.0"
   }
 }
