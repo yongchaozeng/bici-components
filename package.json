@@ -47,7 +47,7 @@
     "react-dnd": "^14.0.4",
     "react-dnd-html5-backend": "^14.0.2",
     "use-immer": "^0.6.0",
-    "yorkie": "^2.0.0"
-  },
-  "dependencies": {}
+    "yorkie": "^2.0.0",
+    "@ant-design/pro-table": "^2.60.0"
+  }
 }

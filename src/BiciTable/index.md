@@ -67,13 +67,29 @@ export default () => {
           title: '炉号',
           dataIndex: ['coldDrawnFactoryText', 'embryoRateQuantity'],
           filterType: 'input',
+          copyable: true,
         },
-        { title: '牌号', dataIndex: 'onlyNum', valueType: 'select', valueEnum: array },
+        {
+          title: '牌号1',
+          dataIndex: 'onlyNum',
+          ellipsis: true,
+          valueType: 'select',
+          valueEnum: array,
+        },
+        {
+          title: '牌号2',
+          dataIndex: 'onlyNum',
+          ellipsis: true,
+          valueType: 'select',
+          valueEnum: array,
+        },
         { title: '努不光彩', dataIndex: 'id', filterType: 'input' },
         { title: '嘤嘤嘤', dataIndex: 'mark' },
         { title: '增不绝口', dataIndex: 'uploadTime' },
       ]}
-      request={request}
+      request={(params = {}, sort, filter) => {
+        return request(params);
+      }}
     />
   );
 };
