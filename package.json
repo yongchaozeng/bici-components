@@ -29,7 +29,8 @@
     ]
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.7.0", 
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-field": "^1.29.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
