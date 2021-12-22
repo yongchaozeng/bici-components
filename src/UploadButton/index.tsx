@@ -1,16 +1,40 @@
-import { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useToggle } from 'ahooks';
-import { Button, Popover, Upload, message } from 'antd';
+import { Button, Popover, Upload, message, Tooltip } from 'antd';
 import classNames from 'classnames';
 import styles from './index.module.less';
 
+//multipartFiles
 const UploadButton: FC<{
-  onUpload: (file: File) => void;
+  title?: string;
+  maxSize?: number;
+  btnName?: string;
+  downloadName?: string;
+  downLoadExcelRequest?: any;
+  disabled?: boolean;
+  children?: JSX.Element;
+  request: (params: FormData) => Promise<any>;
+  fileName?: string;
+  onSuccess?: (file: File) => void;
+  onError?: (error: any) => void;
 }> = (props) => {
-  const { onUpload } = props;
-  const [visible, { toggle }] = useToggle();
-  const [file, setFile] = useState<File | null>(null);
+  const {
+    title,
+    btnName = '文件上传',
+    maxSize = 5,
+    children,
+    disabled = false,
+    request,
+    fileName = 'file',
+    onSuccess,
+    onError,
+  } = props;
 
+  const [visible, { toggle }] = useToggle();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const text = loading ? '正在上传' : file ? file.name : '上传文件';
   useEffect(() => {
     if (!visible) {
       setFile(null);
@@ -18,28 +42,75 @@ const UploadButton: FC<{
   }, [visible]);
 
   function beforeUpload(file: File) {
+    const { size, type, name } = file;
+    const sizeLimit = 1024 * 1024 * maxSize;
+
     if (
-      file.type !== 'application/vnd.ms-excel' &&
-      file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      type !== 'application/vnd.ms-excel' &&
+      type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ) {
       message.error(`${file.name} 不是excel文件！`);
       return false;
     }
-
+    if (size > sizeLimit) {
+      message.error(`${name}大于${maxSize}M`);
+      return;
+    }
     setFile(file);
 
     return false;
+  }
+
+  async function handleUpload() {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      if (file) {
+        formData.append(fileName, file);
+        await request(formData);
+        setLoading(false);
+        toggle();
+        onSuccess?.(file);
+        if (!onSuccess) {
+          message.success(`文件上传成功！`);
+        }
+      }
+    } catch (error: any) {
+      setLoading(false);
+      setError(true);
+      onError?.(error);
+    }
   }
 
   const content = (
     <div style={{ textAlign: 'center', width: 230, padding: '10px 0' }}>
       <Upload maxCount={1} itemRender={() => <></>} accept=".xls,.xlsx" beforeUpload={beforeUpload}>
         <div
-          className={classNames(styles.upload, file ? styles.iconExcel : styles.uploadIcon)}
+          className={classNames(
+            styles.upload,
+            loading ? styles.iconLoading : file ? styles.iconExcel : styles.uploadIcon,
+          )}
         ></div>
       </Upload>
-      {file ? <div>{file.name}</div> : <div>上传文件</div>}
-      <div className="flex" style={{ marginTop: 10 }}>
+
+      <Tooltip title={text}>
+        <div className={styles.fileName}>{text}</div>
+      </Tooltip>
+
+      {error && (
+        <div style={{ color: 'red', fontSize: 12, paddingTop: 5 }}>
+          导入失败，可重试！
+          <a
+            onClick={() => {
+              setFile(null);
+              setError(false);
+            }}
+          >
+            重新上传
+          </a>
+        </div>
+      )}
+      <div className="flex" style={{ marginTop: 10, justifyContent: 'space-evenly' }}>
         <Button
           onClick={() => {
             toggle();
@@ -54,20 +125,26 @@ const UploadButton: FC<{
       </div>
     </div>
   );
-  async function handleUpload() {
-    onUpload(file!);
-  }
-  return (
-    <Popover placement="bottom" content={content} visible={visible} trigger="click">
-      <Button
-        size="large"
-        onClick={() => {
+
+  const render = useMemo(() => {
+    return React.cloneElement(
+      children || (
+        <Button size="large" style={{ margin: '0 10px', width: 104 }}>
+          {btnName}
+        </Button>
+      ),
+      {
+        disabled: disabled,
+        onClick: () => {
           toggle(true);
-        }}
-        style={{ margin: '0 10px', width: 104 }}
-      >
-        文件上传
-      </Button>
+        },
+      },
+    );
+  }, [disabled]);
+
+  return (
+    <Popover title={title} placement="bottom" content={content} visible={visible} trigger="click">
+      {render}
     </Popover>
   );
 };
