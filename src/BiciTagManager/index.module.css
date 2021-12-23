@@ -1,0 +1,148 @@
+.tagWrapper {
+  width: auto;
+  min-height: 24px;
+  border-radius: 4px;
+  padding: 2px 8px 3px 8px;
+  margin: 0 6px 6px 0;
+  display: flex;
+  font-size: 16px;
+}
+.itemTagWrapper {
+  /* display: flex;
+  flex-wrap: wrap; */
+  background: #f5f5f5;
+  color: #222222;
+  padding: 2px;
+}
+.itemTagName {
+}
+.removeTagIcon {
+  width: 12px;
+  height: 12px;
+  color: #a4a4a4;
+  transform: rotate(45deg);
+  position: relative;
+  left: 10px;
+  top: calc(50% - 16px);
+  font-size: 20px;
+  cursor: pointer;
+}
+.removeTagIcon:hover {
+  color: #222;
+}
+.addItemTag {
+  width: 100px;
+  border: 1px dashed #096dd9;
+  font-size: 16px;
+  font-family: SourceHanSansSC-Normal, SourceHanSansSC;
+  font-weight: 400;
+}
+
+.disabledTag {
+  cursor: not-allowed;
+  width: 100px;
+  border: 1px dashed #ccc;
+  font-size: 16px;
+  font-family: SourceHanSansSC-Normal, SourceHanSansSC;
+  font-weight: 400;
+}
+/* 待选择标签列表 */
+.dataSourcePanel {
+  width: 340px;
+  height: 280px;
+  background: #ffffff;
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  z-index: 1;
+  padding: 10px;
+}
+.normalStatusTitle {
+  font-size: 16px;
+  font-family: SourceHanSansSC-Normal, SourceHanSansSC;
+  font-weight: 400;
+  color: rgba(34, 34, 34, 0.4);
+  padding: 10px 0 20px 0;
+}
+.positiveIcon {
+  width: 12px;
+  height: 12px;
+  color: #a4a4a4;
+  position: absolute;
+  left: 0px;
+  top: calc(50% - 17px);
+  font-size: 20px;
+  cursor: pointer;
+}
+.normalStatus {
+  height: 212px;
+  overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+/*滚动条整体样式*/
+.normalStatus::-webkit-scrollbar {
+  width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 0px;
+}
+/*滚动条里面小方块*/
+.normalStatus::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  -webkit-box-shadow: inset 0 0 4px #d8d8d8;
+  background: #d8d8d8;
+}
+/*滚动条里面轨道*/
+.normalStatus::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 0px #fff;
+  border-radius: 0;
+  background: #fff;
+}
+.existenceTag:hover {
+  cursor: pointer;
+}
+.existenceTag:hover .editIcon {
+  visibility: visible;
+  cursor: pointer;
+}
+.editIcon {
+  position: absolute;
+  top: calc(50% - 8px);
+  right: 18px;
+  visibility: hidden;
+}
+/* 编辑状态 */
+.editTitleWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.removeIconWrapper {
+  cursor: pointer;
+  padding-top: 12px;
+  font-size: 16px;
+}
+.removeIcon {
+  margin-right: 4px;
+}
+.btnWrapper {
+  padding-top: 40px;
+}
+
+.gray_text {
+  height: 20px;
+  font-size: 16px;
+  font-family: SourceHanSansSC-Normal, SourceHanSansSC;
+  font-weight: 400;
+  color: rgba(34, 34, 34, 0.4);
+  line-height: 20px;
+}
+.empty_status_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 142px;
+}
+.empty_icon {
+  font-size: 64px;
+  margin-bottom: 8px;
+}

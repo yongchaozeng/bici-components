@@ -8,5 +8,6 @@ export { default as BiciTable } from './BiciTable';
 export { default as UploadButton } from './UploadButton';
 export { default as InputNum } from './InputNum';
 export { default as BiciTextArea } from './BiciTextArea';
+// export { default as BiciTagManager } from './BiciTagManager';
 
 export { TableDropdown };
