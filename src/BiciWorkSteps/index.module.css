@@ -1,0 +1,48 @@
+.point {
+  width: 10px;
+  height: 10px;
+  background: #333333;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.line {
+  height: inherit;
+  width: 2px;
+  margin-left: 4px;
+  margin-right: 20px;
+  min-height: 30px;
+  position: relative;
+}
+
+.topWrapper {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  line-height: 30px;
+}
+.stepName {
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 22px;
+  padding-bottom: 10px;
+  /* width: 100px; */
+}
+.contentWrapper {
+  display: flex;
+}
+.addIcon {
+  cursor: pointer;
+  font-size: 18px;
+  position: absolute;
+  left: -8px;
+  top: calc(50% - 9px);
+  z-index: 1;
+}
+
+.addIcon {
+  background-color: #fff;
+  color: #52c41a;
+}
