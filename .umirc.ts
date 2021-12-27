@@ -8,5 +8,5 @@ export default defineConfig({
   styles:
     process.env.NODE_ENV === 'development'
       ? [`https://cdn.bootcdn.net/ajax/libs/antd/4.16.9/antd.compact.css`]
-      : [],
+      : ['https://cdn.bootcdn.net/ajax/libs/antd/4.16.9/antd.compact.css'],
 });
